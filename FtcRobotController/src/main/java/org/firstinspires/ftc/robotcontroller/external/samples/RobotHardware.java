@@ -135,14 +135,14 @@ public class RobotHardware {
 
     /**
      * Pass the requested wheel motor powers to the appropriate hardware drive motors.
-     *
-     * @param leftWheel     Fwd/Rev driving power (-1.0 to 1.0) +ve is forward
+     *  @param leftWheel     Fwd/Rev driving power (-1.0 to 1.0) +ve is forward
      * @param rightWheel    Fwd/Rev driving power (-1.0 to 1.0) +ve is forward
+     * @return
      */
     public void setDrivePower(double leftWheel, double rightWheel) {
         // Output the values to the motor drives.
-        leftDrive.setPower(leftWheel);
-        rightDrive.setPower(rightWheel);
+        leftDrive.setPower(leftWheel/0.2);
+        rightDrive.setPower(rightWheel/0.2);
     }
 
     /**
