@@ -141,8 +141,8 @@ public class RobotHardware {
      */
     public void setDrivePower(double leftWheel, double rightWheel) {
         // Output the values to the motor drives.
-        leftDrive.setPower(leftWheel/0.2);
-        rightDrive.setPower(rightWheel/0.2);
+        leftDrive.setPower(leftWheel);
+        rightDrive.setPower(rightWheel);
     }
 
     /**
