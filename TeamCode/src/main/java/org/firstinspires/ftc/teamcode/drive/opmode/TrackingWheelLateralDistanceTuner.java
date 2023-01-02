@@ -96,12 +96,15 @@ public class TrackingWheelLateralDistanceTuner extends LinearOpMode {
         boolean tuningFinished = false;
 
         while (!isStopRequested() && !tuningFinished) {
-            Pose2d vel = new Pose2d(0, 0, gamepad1.right_stick_x);
-            drive.setDrivePower(vel);
-//            telemetry.addData("joystick", gamepad1.right_stick_x);
-//            telemetry.addData("vel", vel.toString());
-            drive.update();
-//            telemetry.update();
+            drive.setWeightedDrivePower(
+                    new Pose2d(
+                            -gamepad1.left_stick_y,
+                            -gamepad1.left_stick_x,
+                            -gamepad1.right_stick_x
+                    )
+            );
+
+            drive.update();//            telemetry.update();
 
             double heading = drive.getPoseEstimate().getHeading();
             double deltaHeading = heading - lastHeading;
