@@ -1,11 +1,14 @@
 package org.firstinspires.ftc.teamcode.drive.opmode;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.util.Encoder;
 
@@ -26,8 +29,15 @@ public class LocalizationTest extends LinearOpMode {
         Encoder leftEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "FR"));
         Encoder rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "BL"));
         Encoder frontEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "BR"));
-
-
+        BNO055IMU imu = (BNO055IMU) hardwareMap.get("imu");
+        imu.initialize(imu.getParameters());
+        imu.getParameters().angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        imu.getParameters().accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        imu.getParameters().loggingEnabled = false;
+        imu.getParameters().loggingTag = "imu";
+        Telemetry telemetry = FtcDashboard.getInstance().getTelemetry();
+        telemetry.addData("rgeok", "rgkermkm");
+        telemetry.update();
         waitForStart();
 
         while (!isStopRequested()) {
@@ -42,13 +52,14 @@ public class LocalizationTest extends LinearOpMode {
             drive.update();
 
             Pose2d poseEstimate = drive.getPoseEstimate();
-            telemetry.addData("x", poseEstimate.getX());
-            telemetry.addData("y", poseEstimate.getY());
-            telemetry.addData("heading", poseEstimate.getHeading());
-            telemetry.addData("left", leftEncoder.getCurrentPosition());
-            telemetry.addData("right", rightEncoder.getCurrentPosition());
-            telemetry.addData("back", frontEncoder.getCurrentPosition());
-            telemetry.update();
+//            telemetry.addData("x", poseEstimate.getX());
+//            telemetry.addData("y", poseEstimate.getY());
+//            telemetry.addData("heading", poseEstimate.getHeading());
+//            telemetry.addData("left", leftEncoder.getCurrentPosition());
+//            telemetry.addData("right", rightEncoder.getCurrentPosition());
+//            telemetry.addData("back", frontEncoder.getCurrentPosition());
+//            telemetry.addData("imu",imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES));
+//            telemetry.update();
         }
     }
 }
