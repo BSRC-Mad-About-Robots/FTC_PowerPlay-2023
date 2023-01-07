@@ -29,10 +29,9 @@ public class LocalizationTest extends LinearOpMode {
         Encoder rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "BL"));
         Encoder frontEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "BR"));
         Telemetry telemetry = FtcDashboard.getInstance().getTelemetry();
-        telemetry.addData("rgeok", "rgkermkm");
         telemetry.update();
         waitForStart();
-
+        int left = leftEncoder.getCurrentPosition(), right = rightEncoder.getCurrentPosition(), back = frontEncoder.getCurrentPosition();
         while (!isStopRequested()) {
             drive.setWeightedDrivePower(
                     new Pose2d(
@@ -48,11 +47,11 @@ public class LocalizationTest extends LinearOpMode {
 //            telemetry.addData("x", poseEstimate.getX());
 //            telemetry.addData("y", poseEstimate.getY());
 //            telemetry.addData("heading", poseEstimate.getHeading());
-//            telemetry.addData("left", leftEncoder.getCurrentPosition());
-//            telemetry.addData("right", rightEncoder.getCurrentPosition());
-//            telemetry.addData("back", frontEncoder.getCurrentPosition());
+            telemetry.addData("left",leftEncoder.getCurrentPosition()-left );
+            telemetry.addData("right", rightEncoder.getCurrentPosition()-right);
+            telemetry.addData("back", frontEncoder.getCurrentPosition()-back);
 //            telemetry.addData("imu",imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES));
-//            telemetry.update();
+            telemetry.update();
         }
     }
 }
