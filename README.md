@@ -1,7 +1,3 @@
-# Road Runner Quickstart
-
-An example FTC project using [Road Runner](https://github.com/acmerobotics/road-runner). **Note:** Road Runner is in alpha and many of its APIs are incubating.
-
 ## Installation
 
 For more detailed instructions on getting Road Runner setup in your own project, see the [Road Runner README](https://github.com/acmerobotics/road-runner#core).
@@ -13,5 +9,4 @@ For more detailed instructions on getting Road Runner setup in your own project,
 1. If you have trouble with multidex, enable proguard by changing `useProguard` to `true` in `build.common.gradle`.
 
 ## Documentation
-
-Check out the new [online quickstart documentation](https://acme-robotics.gitbook.io/road-runner/quickstart/introduction).
+FTC Team #18025 BSRC M.A.R'S teamcode for the year 2022-23 Powerplay season
