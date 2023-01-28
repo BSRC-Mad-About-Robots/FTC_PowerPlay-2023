@@ -5,10 +5,8 @@ import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.util.Encoder;
 
 /*
  * This is an example of a more complex path to really test the tuning.
@@ -18,39 +16,36 @@ public class SplineTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        Encoder leftEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "FR"));
-        Encoder rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "BL"));
-        Encoder frontEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "BR"));
-        waitForStart();
+
         waitForStart();
 
         if (isStopRequested()) return;
+        double x=0;
+        double y=0;
+        double q=0;
 
-        Trajectory traj = drive.trajectoryBuilder(new Pose2d())
-                .splineTo(new Vector2d(23.5, 23.5), 0)
-                .build();
-        Trajectory traj1 =drive.trajectoryBuilder(traj.end(), true)
-                .splineTo(new Vector2d(0, 0), Math.toRadians(180))
+//        q++;
+    drive.setPoseEstimate(new Pose2d(0, 0, drive.getRawExternalHeading()));
+        Trajectory traj = drive.trajectoryBuilder(new Pose2d(0,0))
+                .splineTo(new Vector2d(30, 30), 0)
                 .build();
 
         drive.followTrajectory(traj);
 
-        sleep(2000);
+        sleep(4000);
 
-        drive.followTrajectory(traj1);
-        sleep(1000);
-        drive.followTrajectory(
-                drive.trajectoryBuilder(traj1.end())
-                        .splineTo(new Vector2d(0, 0), 0)
+    Pose2d myPose = new Pose2d(30, 30, drive.getRawExternalHeading());
+    drive.setPoseEstimate(myPose);
+
+    drive.followTrajectory(
+                drive.trajectoryBuilder(traj.end(), true)
+                        .splineTo(new Vector2d(-1.9, 0.45), Math.toRadians(180))
                         .build()
         );
-        Pose2d poseEstimate = drive.getPoseEstimate();
+//
 
-        telemetry.addData("finalX", poseEstimate.getX());
-        telemetry.addData("finalY", poseEstimate.getY());
-        telemetry.addData("finalHeading", poseEstimate.getHeading());
-        telemetry.addData("back", frontEncoder.getCurrentPosition());
-        telemetry.update();
+    sleep(2000);
+
 
     }
 }

@@ -276,7 +276,8 @@ public class SampleTankDrive extends TankDrive {
         }
         return Arrays.asList(leftSum / leftMotors.size(), rightSum / rightMotors.size());
     }
-
+    @NonNull
+@Override
     public List<Double> getWheelVelocities() {
         double leftSum = 0, rightSum = 0;
         for (DcMotorEx leftMotor : leftMotors) {

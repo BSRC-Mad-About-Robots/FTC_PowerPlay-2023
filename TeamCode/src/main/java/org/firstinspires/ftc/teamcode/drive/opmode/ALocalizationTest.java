@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.drive.opmode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -19,7 +20,9 @@ import org.firstinspires.ftc.teamcode.util.Encoder;
  * encoder localizer heading may be significantly off if the track width has not been tuned).
  */
 @TeleOp(group = "drive")
-public class LocalizationTest extends LinearOpMode {
+public class ALocalizationTest extends LinearOpMode {
+    BNO055IMU imu;
+
     @Override
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
@@ -28,10 +31,22 @@ public class LocalizationTest extends LinearOpMode {
         Encoder leftEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "FR"));
         Encoder rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "BL"));
         Encoder frontEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "BR"));
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+
+        parameters.angleUnit           = BNO055IMU.AngleUnit.RADIANS;
+//        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+
+        parameters.loggingEnabled      = false;
+        parameters.loggingTag          = "IMU";
+        // parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+        imu.initialize(parameters);
         Telemetry telemetry = FtcDashboard.getInstance().getTelemetry();
+        telemetry.addData("rgeok", "rgkermkm");
         telemetry.update();
         waitForStart();
-        int left = leftEncoder.getCurrentPosition(), right = rightEncoder.getCurrentPosition(), back = frontEncoder.getCurrentPosition();
+
         while (!isStopRequested()) {
             drive.setWeightedDrivePower(
                     new Pose2d(
@@ -40,16 +55,17 @@ public class LocalizationTest extends LinearOpMode {
                             -gamepad1.right_stick_x
                     )
             );
+
             drive.update();
 
             Pose2d poseEstimate = drive.getPoseEstimate();
             telemetry.addData("x", poseEstimate.getX());
             telemetry.addData("y", poseEstimate.getY());
             telemetry.addData("heading", poseEstimate.getHeading());
-            telemetry.addData("left",leftEncoder.getCurrentPosition()-left );
-            telemetry.addData("right", rightEncoder.getCurrentPosition()-right);
-            telemetry.addData("back", frontEncoder.getCurrentPosition()-back);
-//            telemetry.addData("imu",imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES));
+            telemetry.addData("left", leftEncoder.getCurrentPosition());
+            telemetry.addData("right", rightEncoder.getCurrentPosition());
+            telemetry.addData("back", frontEncoder.getCurrentPosition());
+            telemetry.addData("imu",drive.getPoseVelocity());
             telemetry.update();
         }
     }

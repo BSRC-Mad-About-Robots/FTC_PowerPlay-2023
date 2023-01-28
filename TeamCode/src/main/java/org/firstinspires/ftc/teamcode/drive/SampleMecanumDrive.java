@@ -53,10 +53,10 @@ import java.util.List;
  */
 @Config
 public class SampleMecanumDrive extends MecanumDrive {
-    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(1, 0, 0);
-    public static PIDCoefficients HEADING_PID = new PIDCoefficients(1, 0, 0);
+    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(13, 1.1, 1);
+    public static PIDCoefficients HEADING_PID = new PIDCoefficients(16, 1, 1);
 
-    public static double LATERAL_MULTIPLIER = 1.1851851852;
+    public static double LATERAL_MULTIPLIER = 1.1764705882;
 
     public static double VX_WEIGHT = 1;
     public static double VY_WEIGHT = 1;
@@ -90,9 +90,16 @@ public class SampleMecanumDrive extends MecanumDrive {
         }
 
         // TODO: adjust the names of the following hardware devices to match your configuration
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
+
+        parameters.angleUnit           = BNO055IMU.AngleUnit.RADIANS;
+//        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+
+        parameters.loggingEnabled      = false;
+        parameters.loggingTag          = "IMU";
+        // parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
 
         // TODO: If the hub containing the IMU you are using is mounted so that the "REV" logo does
@@ -277,7 +284,7 @@ public class SampleMecanumDrive extends MecanumDrive {
         }
         return wheelPositions;
     }
-
+@NonNull
     @Override
     public List<Double> getWheelVelocities() {
         List<Double> wheelVelocities = new ArrayList<>();
