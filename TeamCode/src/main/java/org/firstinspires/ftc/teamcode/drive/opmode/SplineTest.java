@@ -5,6 +5,7 @@ import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import java.lang.*;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
@@ -17,13 +18,17 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 public class SplineTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
-        long millis=System.currentTimeMillis();
+        DcMotorEx leftFront, leftRear, rightRear, rightFront;
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+        leftFront = hardwareMap.get(DcMotorEx.class, "FL");
+        leftRear = hardwareMap.get(DcMotorEx.class, "BL");
+        rightRear = hardwareMap.get(DcMotorEx.class, "BR");
+        rightFront = hardwareMap.get(DcMotorEx.class, "FR");
         Pose2d startPose = new Pose2d(32.5, -63, Math.toRadians(90));
         drive.setPoseEstimate(startPose);
 
         Trajectory traj = drive.trajectoryBuilder(startPose)
-                .lineToSplineHeading(new Pose2d(34  , -12.1, Math.toRadians(0)))
+                .lineToSplineHeading(new Pose2d(35  , -12.1, Math.toRadians(0)))
                 .build();
 
         Trajectory traj3 = drive.trajectoryBuilder(new Pose2d())
@@ -35,14 +40,17 @@ public class SplineTest extends LinearOpMode {
         Trajectory traj4 = drive.trajectoryBuilder(new Pose2d())
                 .forward(1.7+23.4)
                 .build();
-        Trajectory traj5 = drive.trajectoryBuilder(new Pose2d())
+        Trajectory traj5 = drive.trajectoryBuilder(startPose)
 //
-                .forward(39.25)
+                .forward(26)
 //                .addSpatialMarker(new Vector2d(30, 0),() ->{})
-                .splineTo(new Vector2d(7.5+11.7+23.4+7.5+0.8, -4), Math.toRadians(-90))
+
+                .splineTo(new Vector2d(40 , -12.1), Math.toRadians(0))
+
                 .build();
 //
         waitForStart();
+        long millis=System.currentTimeMillis();
 //clock.startmillis();
 //        if (isStopRequested()) return;
 
