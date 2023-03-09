@@ -27,14 +27,14 @@ import java.util.List;
  *    | ||        || |
  *    | ||        || |
  *    |              |
- *    |               |
+ *    |              |
  *    \--------------/
  *
  */
 @Config
 public class StandardTrackingWheelLocalizer extends TwoTrackingWheelLocalizer {
     public static double TICKS_PER_REV = 8192;
-    public static double WHEEL_RADIUS = 1; // in
+    public static double WHEEL_RADIUS = 0.75; // in
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (en    coder) speed
 
     public static double LATERAL_DISTANCE = 13.5; // in; distance between the left and right wheels
@@ -42,11 +42,10 @@ public class StandardTrackingWheelLocalizer extends TwoTrackingWheelLocalizer {
     public static double LATERAL_LEFT_INCREASE = 1; // in; distance between the left and right wheels
     public static double LATERAL_RIGHT_INCREASE = 1; // in; distance between the left and right wheels
 
-    public static double X_MULTIPLIER = 0.766; // Multiplier in the X direction
-    public static double Y_MULTIPLIER = 0.759;
-// Multiplier in the Y direction
-//public s              tatic double X_MULTIPLIER = 1;
-//    public static double Y_MULTIPLIER = 1;// Multiplier in the X direction
+    public static double X_MULTIPLIER = 1.0104499525; // Multiplier in the X direction
+    public static double Y_MULTIPLIER = 1;// Multiplier in the Y direction
+//public static double X_MULTIPLIER = 1;
+//    public static double Y_MULTIPLIER = 1;// Multiplier iDn the X direction
     //    public static double Y_MULTIPLIER = 0.7501;
 //    public static double X_MULTIPLIER = 0.77871512; // Multiplier in the X direction
 //    public static double Y_MULTIPLIER = 0.769477397;
@@ -62,9 +61,9 @@ public class StandardTrackingWheelLocalizer extends TwoTrackingWheelLocalizer {
                 new Pose2d(FORWARD_OFFSET, 0, Math.toRadians(90)) // front
         ));
 
-        leftEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "FR"));
+        frontEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "FR"));
 //        rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "BL"));
-        frontEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "BR"));
+        leftEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "BR"));
         imu = hardwareMap.get(BNO055IMU .class, "imu");
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
